@@ -23,16 +23,15 @@
     margin-top: 6rem;
     margin-bottom: 0.6rem;
     gap: 3rem;
-.container-2{
-    margin-top: 5rem;
-}
     .container-1 {
         display: grid;
         grid-template-columns: 2fr 2fr;
         gap: 6rem;
-        .MyTable-2{
+
+        .MyTable-2 {
             margin-top: 1.5rem;
         }
+
         .MyTable {
             border-collapse: collapse;
             border: 1px solid grey;
@@ -249,15 +248,16 @@
         @media only screen and (max-width:1210px) {
             display: inline;
         }
-.submit-wrapper{
-    @include displayFlex;
-    padding-bottom: 1rem;
-    .submit-btn {
-        @include btn-basic(#007bff);
-        width: max-content;
-    }
 
-}
+        .submit-wrapper {
+            @include displayFlex;
+            padding-bottom: 1rem;
+
+            .submit-btn {
+                @include btn-basic(#007bff);
+                width: max-content;
+            }
+        }
     }
 }
 
@@ -285,24 +285,30 @@
     gap: 2rem;
 }
 
-.team-key-list {
-    list-style: none;
+.team-key-continer{
+@include alignCenter;
+flex-direction: column;
+    .team-key-list {
+        list-style: none;
+    }
+    .key-table {
+        border-collapse: collapse;
+        margin-top: 2rem;
+        border-radius: 5px;
+    }
 }
 
-.key-table {
-    border-collapse: collapse;
-    margin-top: 2rem;
-    border-radius: 5px;
-}
 
-@mixin table-cell{
+@mixin table-cell {
     padding: .5rem;
     border: 1px solid;
-    text-align: center; 
+    text-align: center;
 }
-.key-table thead td{
+
+.key-table thead td {
     @include table-cell;
 }
+
 .key-table tr td {
     @include table-cell;
 }
@@ -311,6 +317,55 @@
     display: flex;
     flex-direction: column;
     gap: .5rem;
+
+    .btn-wrapper {
+        @include alignCenter;
+        justify-content: space-between;
+        gap: 1rem;
+        width: 100%;
+        padding: 1.5rem 0 1rem;
+
+        .btn-options {
+            display: flex;
+            gap: 1rem;
+
+            .radio-btn {
+                display: flex;
+                gap: .5rem;
+                cursor: pointer;
+                font-size: 16px;
+
+                @media only screen and (max-width:450px) {
+                    padding-bottom: 1rem;
+                }
+            }
+        }
+
+        .filter-btn {
+            @include btn-basic(#1891D1);
+            width: max-content;
+            margin-left: 3rem;
+
+            @media only screen and (max-width:450px) {
+                margin-left: 0;
+            }
+
+        }
+
+        @media only screen and (max-width:450px) {
+            display: inline;
+        }
+
+    }
+
+    // .filter-wrapper{
+    //     @include displayFlex;
+    //     padding: 1rem 0 2rem;
+    //     .filter-btn{
+    //         @include btn-basic(#1891D1);
+    //         width:max-content;
+    //     }
+    // }
 }
 
 .input-file {

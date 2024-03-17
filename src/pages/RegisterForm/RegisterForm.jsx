@@ -1,12 +1,15 @@
 import "./RegisterForm.scss";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LayoutDesign } from "../LayoutDesign/LayoutDesign";
+import { CompanyName } from "../../context/CreateContext";
+import { useNavigate } from "react-router-dom";
 const RegisterForm = () => {
   const [formSubmit, setFormSubmit] = useState(false);
-
+const navigate=useNavigate()
+const {companyName} =useContext(CompanyName)
   const [details, setDetails] = useState({
-    row: 5,
-    column: 5
+    row: 0,
+    column: 0
   })
   const [error, setError] = useState({
     row: false,
@@ -36,6 +39,11 @@ const RegisterForm = () => {
       }
     }
   }
+  useEffect(() => {
+    if (CompanyName === "") {
+      navigate("/")
+    }
+  }, [companyName])
 
   return (
     <>

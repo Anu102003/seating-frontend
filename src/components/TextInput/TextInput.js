@@ -12,6 +12,7 @@ export const TextInput = ({type,name,value,availableSpaces,space,handleOnChange,
             max={availableSpaces}
             disabled={space <= 0}
             className="input-box"
+            autoSave='false'
             placeholder={`Enter Team ${index + 1} ${type==="text"?"Name":"Count"}`}
             onChange={(e) => {handleOnChange(e, index)}}
         />

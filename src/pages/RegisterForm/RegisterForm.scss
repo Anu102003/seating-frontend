@@ -20,7 +20,7 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
         .form {
             width: 40%;
             height: max-content;
-            padding: 3rem 4rem;
+            padding: 1rem 4rem;
             box-shadow: $form-shadow;
             border-radius: 20px;
             background-color: white;
@@ -56,13 +56,15 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
 
                 .input-container {
                     @include input-box;
-
+                    margin: 0;
                     @media only screen and (max-width:1150px) {
                         margin: 0 0 1rem;
                     }
                 }
 
                 .activeInput {
+                    @include displayFlex;
+
                     box-shadow: $input-box-shadow;
                 }
 
