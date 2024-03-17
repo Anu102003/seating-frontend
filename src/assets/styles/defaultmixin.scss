@@ -1,0 +1,108 @@
+$input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
+@mixin max-wt-ht {
+    height: 100%;
+    width: 100%;
+}
+
+@mixin displayFlex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin alignCenter {
+    display: flex;
+    align-items: center;
+}
+@mixin justifyCenter {
+    display: flex;
+    justify-content: center;
+}
+@mixin input-basic {
+    border: none;
+    outline: none;
+}
+
+@mixin danger {
+    color: #cc3131;
+    padding-top: 5px;
+}
+
+@mixin fontS22B700 {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+@mixin fontS28B600 {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+@mixin fontS18B700 {
+    font-weight: 700;
+    font-size: 18px;
+}
+@mixin fontS20B700 {
+    font-weight: 700;
+    font-size: 20px;
+}
+@mixin heading{
+    text-align: center;
+    line-height: 1.5;
+    @include fontS28B600;
+}
+@mixin input-box{
+    gap: 0.7rem;
+    padding: 7px 15px;
+    border: 1px solid #bec0c1;
+    line-height: 26px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    margin-top: 1rem;
+
+    input {
+        font-size: 18px;
+        @include input-basic;
+        @include max-wt-ht;
+
+    }
+
+    &:hover {
+        box-shadow: $input-box-shadow;
+    }
+}
+
+@mixin y-n-btn($bg) {
+    color: white;
+    background: $bg;
+    border-radius: 40px;
+    @include fontS22B700;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+@mixin true-false-btn {
+    margin: 3rem 0;
+    @include alignCenter;
+    flex-direction: row;
+    gap: 3rem;
+    justify-content: space-evenly;
+
+
+    .yes-btn {
+        @include y-n-btn(#42CE7D)
+    }
+
+    .no-btn {
+        @include y-n-btn(#FF4D4D)
+    }
+
+    button {
+        height: fit-content;
+        min-height: 50px;
+        min-width: 80px;
+        @include input-basic;
+    }
+}

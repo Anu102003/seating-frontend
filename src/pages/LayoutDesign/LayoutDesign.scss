@@ -1,0 +1,69 @@
+@import "../../assets/styles/defaultmixin.scss";
+
+.layout-page{
+    margin: 10rem 10rem;
+}
+.row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.column{
+    margin: 5px;
+    height: 2.5rem;
+    width: 2.5rem;
+    border: 1px solid black;
+}
+.active{
+    background: green;
+}
+.submit-btn-container{
+    width: 100%;
+    margin: 3rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.submit-btn{
+    padding: 0.6rem;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #007bff;
+}
+.product-popup-parent {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 4;
+    flex-direction: column;
+    @include displayFlex;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.729);
+
+    .product-popup {
+        max-height: max-content;
+        width: 30%;
+        height: 40%;
+        overflow-y: scroll;
+        background-color: white;
+        border-radius: 20px;
+        overflow: auto;
+        margin: 20px 0px;
+        position: relative;
+
+        .close-icon {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            cursor: pointer;
+        }
+
+    }
+}
