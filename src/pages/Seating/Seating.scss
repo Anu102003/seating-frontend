@@ -228,11 +228,18 @@
                                 opacity: 0.9;
                             }
                         }
-
-                        .uploaded-file {
-                            font-size: 16px;
-                            padding: 3px 0 1rem;
-                            color: #3c4858;
+                        .upload-file-wrapper{
+                            @include displayFlex;
+                            gap:1rem;
+                            padding-bottom: 1rem;
+                            .cross-btn {
+                                @include btn-basic(#dc3545)
+                            }
+                            .uploaded-file {
+                                font-size: 16px;
+                                // padding: 3px 0 1rem;
+                                color: #3c4858;
+                            }
                         }
                     }
 
