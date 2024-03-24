@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./LayoutDesign.scss";
-import axios from "axios";
-import { Cell } from "../../components/Cell/Cell";
+import { Cell } from "../../assets/components/Cell/Cell";
 import { CompanyName } from "../../context/CreateContext";
 import { useNavigate } from "react-router-dom";
-import { postlayoutApi } from "../../actions/ApiCall";
-import { LayoutPopup } from "../../components/LayoutPopup/LayoutPopup";
+import { LayoutPopup } from "../../assets/components/LayoutPopup/LayoutPopup";
 
-export const LayoutDesign = ({ row, column }) => {
+export const LayoutDesign = ({ row, column,setUpdateData, setData, setFormSubmit, setDetails, data, totalLayout }) => {
 
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
@@ -34,31 +32,45 @@ export const LayoutDesign = ({ row, column }) => {
   }, [row, column]);
 
 
-  const layOutDto = {
-    companyName: companyName,
-    row: row,
-    column: column,
-    layOut: dataArray,
-  };
-
-  const handleSubmit = () => {
-    setPopup(true)
-    const ans = getCount();
-    setCount(ans);
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      if (submit) {
-        const result = handleResult(layOutDto);
-        const res = await postlayoutApi(result);
-        // console.log(res);
-        navigate("/seating", { state: { data: result, flag: true, availableSpaces: count } });
+  // const layOutDto = {
+  //   companyName: companyName,
+  //   row: row,
+  //   column: column,
+  //   layOut: dataArray,
+  // };
+  const handleSubmit =async () => {
+    // setPopup(true)
+    // if (data.length + 1 >= totalLayout) {
+    //   const res=await createlayout(companyName,data)
+    //   navigate("/")
+    // }
+    // else {
+      if(totalLayout===false){
+        // console.log(dataArray)
+        setUpdateData(dataArray)
+      }else{
+        setData(prevData => [...prevData, dataArray]);
+        setFormSubmit(false)
+        setDetails((prevValue) => ({ ...prevValue, row: 0, column: 0 }))
+        const ans = getCount();
+        setCount(ans);
       }
-    }
-    fetchData();
-  }, [submit])
+    // }
+  };
+  // console.log(dataArray)
 
+  // useEffect(() => {
+  //    function fetchData() {
+  //     if (submit) {
+  //       const result = handleResult(layOutDto);
+  //       const res = await postlayoutApi(result);
+  //       // console.log(res);
+  //       navigate("/seating", { state: { data: result, flag: true, availableSpaces: count } });
+  //     }
+  //   }
+  //   fetchData();
+  // }, [submit])
+// console.log(dataArray)
 
   const getCount = () => {
     let total = 0;
@@ -101,7 +113,7 @@ export const LayoutDesign = ({ row, column }) => {
       ))}
       <div className="submit-btn-container">
         <button className="submit-btn" onClick={handleSubmit}>
-          Submit
+         {data.length + 1 >= totalLayout ? "Submit Layout":"Add Layout"}
         </button>
       </div>
       {

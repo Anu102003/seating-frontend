@@ -1,20 +1,33 @@
 import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Seating from "../pages/Seating/Seating";
-import Home from "../pages/Home/Home";
-import RegisterForm from "../pages/RegisterForm/RegisterForm";
-import {CompanyName} from "../context/CreateContext";
+import { CompanyName } from "../context/CreateContext";
+import { LoginPage } from "../pages/LoginPage/LoginPage";
+import LayoutForm from "../pages/LayoutForm/LayoutForm";
+import LayoutRegister from "../pages/LayoutRegister/LayoutRegister";
+import { Home } from "../pages/Home/Home";
+import { Operations } from "../pages/Operations/Operations";
+import NavBar from "../pages/NavBar";
+import { Allocation } from "../pages/Allocation/Allocation";
 
 const MainRoutes = () => {
-  const[companyName,setCompanyName]=useState("")
+  const [companyName, setCompanyName] = useState("ice")
+  const[companyNotFound,setCompanyNotFound]=useState(false)
+
   return (
     <BrowserRouter>
-    <CompanyName.Provider value={{companyName,setCompanyName}}>
-      <Routes>
-        <Route path="/seating" element={<Seating />} />
-        <Route path="/" element={<Home/>}/>
-        <Route path="/register" element={<RegisterForm/>}/>
-      </Routes>
+      <NavBar companyNotFound={companyNotFound}/>
+      <CompanyName.Provider value={{ companyName, setCompanyName }}>
+        <Routes>
+          <Route path="/seating" element={<Seating />} />
+          <Route path="/register" element={<LayoutRegister />} />
+          <Route path="/layoutform" element={<LayoutForm />} />
+          <Route path="/allocation" element={<Allocation />} />
+          <Route path="/login" element={<LoginPage />} />
+          {/* <Route path="/register" element={<RegisterForm/>}/> */}
+          <Route path="/operations" element={<Operations />} />
+          <Route path="/" element={<Home companyNotFound={companyNotFound} setCompanyNotFound={setCompanyNotFound} />} />
+        </Routes>
       </CompanyName.Provider>
     </BrowserRouter>
   );

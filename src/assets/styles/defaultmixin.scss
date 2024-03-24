@@ -9,7 +9,11 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
     align-items: center;
     justify-content: center;
 }
-
+@mixin justifySpaceBt{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 @mixin alignCenter {
     display: flex;
     align-items: center;
@@ -18,7 +22,16 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
     display: flex;
     justify-content: center;
 }
+@mixin justifyEnd {
+    display: flex;
+    justify-content:end;
+}
 @mixin input-basic {
+    border: none;
+    outline: none;
+}
+@mixin btn-basic {
+    cursor: pointer;
     border: none;
     outline: none;
 }
@@ -41,6 +54,10 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
 @mixin fontS18B700 {
     font-weight: 700;
     font-size: 18px;
+}
+@mixin fontS20B500 {
+    font-weight: 500;
+    font-size: 20px;
 }
 @mixin fontS20B700 {
     font-weight: 700;
@@ -80,7 +97,7 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
     cursor: pointer;
 
     &:hover {
-        opacity: 0.9;
+        opacity: 0.8;
     }
 }
 @mixin true-false-btn {
@@ -102,7 +119,54 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
     button {
         height: fit-content;
         min-height: 50px;
-        min-width: 80px;
-        @include input-basic;
+        min-width: 100px;
+        @include btn-basic;
+    }
+}
+
+@mixin popup-parent {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 4;
+    flex-direction: column;
+    @include displayFlex;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.729);
+
+}
+@mixin popup {
+    max-height: max-content;
+    width: 30%;
+    height: 40%;
+    overflow-y: scroll;
+    background-color: white;
+    border-radius: 20px;
+    overflow: auto;
+    margin: 20px 0px;
+    position: relative;
+
+    .close-icon {
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        cursor: pointer;
+    }
+}
+
+@mixin button($bg) {
+    @include justifySpaceBt;
+    gap: 1rem;
+    @include btn-basic;
+    background-color: $bg ;
+    color: white;
+    @include fontS18B700;
+    border-radius: 15px;
+    padding: 1rem 2.5rem;
+    &:hover{
+        opacity: 0.9;
     }
 }

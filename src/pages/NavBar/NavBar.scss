@@ -1,0 +1,75 @@
+@import "../../assets/styles/defaultmixin.scss";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Nunito", sans-serif;
+
+}
+
+.navbar-wrapper {
+    margin-bottom: 13rem;
+
+    .NavBar {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        height: 7rem;
+        @include alignCenter;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: white;
+
+        .navbar-container {
+            @include max-wt-ht;
+            padding: 0 5rem;
+            margin: auto;
+            @include justifySpaceBt;
+
+            .nav-menu-bar {
+                @include max-wt-ht;
+                @include alignCenter;
+                gap: 7rem;
+
+                .nav-menu-lists {
+                    height: 100%;
+                    @include displayFlex;
+                    
+                    .nav-menu-container {
+                        height: 100%;
+                        position: relative;
+                        @include displayFlex;
+
+                        .nav-menu {
+                            height: 100%;
+                            @include displayFlex;
+                            min-width: 130px;
+                            cursor: pointer;
+                        }
+                        .nav-menu-hr{
+                            position: absolute;
+                            bottom: 1.4rem;
+                            height: 3px;
+                            width: 80%;
+                            background-color: #088b64;
+                        }
+                    }
+                }
+            }
+            .logout-btn {
+                @include justifySpaceBt;
+                gap:1rem;
+                @include btn-basic;
+                background-color: #13b282;
+                color: white;
+                @include fontS18B700;
+                border-radius: 25px;
+                padding: 1rem 2.5rem;
+                &:hover{
+                    opacity: 0.9;
+                }
+            }
+        }
+    }
+}

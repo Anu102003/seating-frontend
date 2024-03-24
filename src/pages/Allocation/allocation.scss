@@ -1,0 +1,16 @@
+@import "../../assets/styles/defaultmixin.scss";
+
+.allocation-page {
+    .heading {
+        @include heading;
+    }
+
+    .navigate-btn-wrapper {
+        @include displayFlex;
+        @include max-wt-ht;
+margin-top: 8rem;
+        .navigate-btn {
+            @include button(#4FD7F7);
+        }
+    }
+}

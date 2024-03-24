@@ -1,7 +1,7 @@
 @import "../../assets/styles/defaultmixin.scss";
 
 .layout-page{
-    margin: 10rem 10rem;
+    margin: 15rem 10rem 10rem;
 }
 .row{
     display: flex;
@@ -35,35 +35,9 @@
     background-color: #007bff;
 }
 .product-popup-parent {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 4;
-    flex-direction: column;
-    @include displayFlex;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.729);
+    @include popup-parent;
 
     .product-popup {
-        max-height: max-content;
-        width: 30%;
-        height: 40%;
-        overflow-y: scroll;
-        background-color: white;
-        border-radius: 20px;
-        overflow: auto;
-        margin: 20px 0px;
-        position: relative;
-
-        .close-icon {
-            position: absolute;
-            top: 1rem;
-            right: 2rem;
-            cursor: pointer;
-        }
-
+        @include popup;
     }
 }

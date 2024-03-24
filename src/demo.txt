@@ -1,0 +1,17 @@
+
+update=>
+lid,CompanyName,layout Array
+
+delete=>
+Id,cname.Array=null
+
+add=>
+lid=null,CompanyName,layout Array
+
+
+
+perference,
+delete,
+login,register,
+logout,
+update,

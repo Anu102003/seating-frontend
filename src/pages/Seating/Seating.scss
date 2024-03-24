@@ -32,25 +32,6 @@
             margin-top: 1.5rem;
         }
 
-        .MyTable {
-            border-collapse: collapse;
-            border: 1px solid grey;
-            text-align: center;
-            @include max-wt-ht;
-
-            .grid-box {
-                height: 2.5rem;
-                width: 2.5rem;
-                border: 1px solid white;
-                border-radius: 5px;
-            }
-
-            @media only screen and (max-width:1210px) {
-                margin-bottom: 4rem;
-            }
-
-        }
-
         .form-wrapper {
             display: flex;
             flex-direction: column;
@@ -96,16 +77,6 @@
                     }
                 }
 
-                .radio-btn {
-                    display: flex;
-                    gap: .5rem;
-                    cursor: pointer;
-
-                    @media only screen and (max-width:450px) {
-                        padding-bottom: 1rem;
-                    }
-                }
-
                 @media only screen and (max-width:450px) {
                     display: inline;
                 }
@@ -144,19 +115,6 @@
                         display: flex;
                         gap: 1.5rem;
                         padding: 0 1.5rem;
-
-                        .input-box {
-                            padding: .5rem;
-                            border: none;
-                            border-radius: 5px;
-                            border: 1px solid black;
-                            font-size: 1rem;
-                            width: 100%;
-
-                            @media only screen and (max-width:600px) {
-                                margin: 0.5rem 0;
-                            }
-                        }
 
                         .cross-btn {
                             @include btn-basic(#dc3545)

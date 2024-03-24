@@ -1,125 +1,168 @@
 import { useContext, useEffect, useState } from "react";
 import "./Seating.scss";
-import { CompanyName } from "../../context/CreateContext";
 import { Link, json, useLocation, useNavigate } from "react-router-dom";
 import { colorList } from "../../constants/colorList";
 import { allocationApi, csvFileApi } from "../../actions/ApiCall";
-import { RadioInput } from "../../components/RadioInput/RadioInput";
-import { TextInput } from "../../components/TextInput/TextInput";
-import { faArrowUpFromBracket, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { RadioInput } from "../../assets/components/RadioInput/RadioInput";
+import { TextInput } from "../../assets/components/TextInput/TextInput";
+import { faArrowUpFromBracket, faCircleCheck, faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ErrorPopup } from "../../components/ErrorPopup/ErrorPopup";
+import { ErrorPopup } from "../../assets/components/ErrorPopup/ErrorPopup";
+import { TableContainer } from "../../assets/components/Table/Table";
 
 const Seating = () => {
-  const [isOutputGenerated, setIsOutput] = useState(false);
-  const { companyName } = useContext(CompanyName);
-  const formData = new FormData();
+
   const location = useLocation();
   const res = location.state.data;
-  const flag = location.state.flag;
+  const layoutId = location.state.layoutId;
   let availableSpaces = location.state.availableSpaces;
+
+  const [isOutputGenerated, setIsOutput] = useState(false);
   const [outputArray, setOutputArray] = useState();
-  const [layOut, setLayOut] = useState(null);
+
   const [file, setFile] = useState("");
+  const formData = new FormData();
+  const [csvData, setCsvData] = useState()
+
   const [teamList, setTeamList] = useState([]);
   const [teamNameList, setTeamNameList] = useState([]);
   const [teamKeyList, setTeamKeyList] = useState([]);
   const [preference, setPreference] = useState(2);
+  const [algorithmPref, setAlgorithmPref] = useState(2);
   const [orderedTeamList, setOrderedTeamList] = useState([]);
   const [space, setSpace] = useState(availableSpaces);
-  const [result, setResult] = useState(null);
-  const navigate = useNavigate()
-  const [error, setError] = useState(false);
+  const [filespace, setFileSpace] = useState();
+  const [inCorrectFile, setInCorrectFile] = useState(false);
+  const [error, setError] = useState({
+    file: false,
+    addTeam: false,
+    outOfSpace: false,
+    fileDataIncorrect: false,
+  });
+
   const layOutDto = {
-    companyName: companyName,
+    layoutId: layoutId,
     teamDtoList: teamList,
     preference: preference,
+    algorithmPref: algorithmPref
   };
-  useEffect(() => {
-    loadLayOut();
-  }, []);
 
-
-  const loadLayOut = async () => {
-    setLayOut(res);
+  //file handling
+  const handleClick = () => {
+    document.getElementById('fileInput').click();
+    setTeamList([])
   };
 
   const handleFile = (e) => {
     setFile(e.target.files[0]);
   };
   formData.append('file', file);
+
+
+  //handing submit (api call)
   const handleSubmit = async () => {
-    if (space >= 0) {
-      setError(false)
+    if (space >= 0 && layOutDto.teamDtoList.length > 0) {
+      setError((prevError) => ({ ...prevError, addTeam: false, file: false, outOfSpace: false }))
       let arr = [];
       teamList?.map((team) => {
-        arr.push(team?.TeamName);
+        arr.push(team?.teamName);
       });
       setTeamNameList(arr);
       const result = handleResult(layOutDto);
       const res = await allocationApi(result);
       setIsOutput(true);
-      setResult(res);
-      setOutputArray(res?.data?.data?.allocation);
+      setOutputArray(res?.data?.allocation);
       let teamKeyList = [];
-      res?.data?.data?.teamReferenceList?.map((team) => {
+      res?.data?.teamReferenceList?.map((team) => {
         teamKeyList.push(team?.key);
       });
       setTeamKeyList(teamKeyList);
-      setOrderedTeamList(res?.data?.data?.teamReferenceList);
+      setOrderedTeamList(res?.data?.teamReferenceList);
     } else {
-      console.log("err")
-      setError(true)
+      if (!(space >= 0)) {
+        setError((prevError) => ({ ...prevError, outOfSpace: true }))
+      } else if (layOutDto.teamDtoList.length < 0 && file.name !== "" || file.name !== undefined) {
+        setError((prevError) => ({ ...prevError, addTeam: true }))
+      } else {
+        setError((prevError) => ({ ...prevError, file: true }))
+      }
       setIsOutput(false);
     }
   };
+
   function handleResult(data) {
     return data;
   }
+  // closing error 
+  const handleErrorClose = () => {
+    if (inCorrectFile) {
+      setInCorrectFile(false)
+    } else if (!(space >= 0)) {
+      setError((prevError) => ({ ...prevError, outOfSpace: false }))
+    }
+    else if (layOutDto.teamDtoList.length < 0 && file.name !== "" || file.name !== undefined) {
+      setError((prevError) => ({ ...prevError, addTeam: false }))
+    } else if (availableSpaces < filespace) {
+      setError((prevError) => ({ ...prevError, fileDataIncorrect: false }))
+    } else {
+      setError((prevError) => ({ ...prevError, file: false }))
+    }
+  }
+
+  //close input field
   const handleCloseBtn = (index) => {
     let arr = [...teamList];
-    setSpace(space + arr[index].TeamCount);
+    setSpace(space + arr[index].teamCount);
     arr = arr.slice(0, index).concat(arr.slice(index + 1, arr.length));
     setTeamList(arr);
   };
-
-  const [csvData, setCsvData] = useState()
+  
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  // handling csv  (api call)
   const handleFileSubmit = async () => {
     try {
-      // const res = await axios.post("http://localhost:8090/csvFile", formData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data',
-      //     },
-      //   }
-      // )
-      const res = await csvFileApi(formData)
-      setCsvData(res?.data?.data?.teamDtoList)
-      // setTeamList(res?.data?.data?.teamDtoList)
-    } catch (error) {
+      const res = await csvFileApi(formData, setInCorrectFile)
+      setFileSpace(res.data.spacesOccupied)
+      if(!inCorrectFile){
+        // if (res.data.spacesOccupied === availableSpaces) {
+          setCsvData(res?.data?.teamDtoList)
+          setError((prevError) => ({ ...prevError, fileDataIncorrect: false }))
+        // }
+        //  else {
+        //   setError((prevError) => ({ ...prevError, fileDataIncorrect: true }))
+        //   setFile("")
+        //   setTeamList([])
+        //   setCsvData([])
+        // }
+      }
+      }
+    catch (error) {
       console.log(error)
     }
   }
-  useEffect(()=>{
-    if(csvData?.length>0){
+
+
+  useEffect(() => {
+    if (csvData?.length > 0 && filespace > availableSpaces) {
       setTeamList(csvData)
     }
-  },[csvData])
-  // console.log(teamList)
+  }, [csvData, filespace])
+
+  //adding team list
   const handleAddTeam = () => {
-    if (!csvData) {
-      let arr = [...teamList];
-      arr.push({
-        TeamName: "",
-        TeamCount: "",
-      });
-      setTeamList(arr);
-    };
+    let arr = [...teamList];
+    arr.push({
+      teamName: "",
+      teamCount: "",
+    });
+    setTeamList(arr);
   }
+
+  //input handling
   const handleOnChange = (e, index) => {
     let arr = [...teamList];
     let spaces = space;
-    if (teamList[index].TeamCount === "" && e.target.name === "TeamCount") {
+    if (teamList[index].teamCount === "" && e.target.name === "teamCount") {
       spaces -= Number(e.target.value);
       setSpace(spaces);
     }
@@ -128,17 +171,18 @@ const Seating = () => {
       ...arr[index],
 
       [e.target.name]:
-        e.target.name === "TeamName" ? e.target.value : Number(e.target.value),
+        e.target.name === "teamName" ? e.target.value : Number(e.target.value),
     };
 
-    if (teamList[index].TeamCount !== "" && e.target.name === "TeamCount") {
-      spaces += teamList[index].TeamCount;
+    if (teamList[index].teamCount !== "" && e.target.name === "teamCount") {
+      spaces += teamList[index].teamCount;
       spaces -= Number(e.target.value);
       setSpace(spaces);
     }
     setTeamList(arr);
   };
 
+  //colour 
   const handleReturnColor = (teamKeyValue) => {
     for (let i = 0; i < teamKeyList.length; i++) {
       if (teamKeyValue && teamKeyValue.includes(teamKeyList[i])) {
@@ -148,86 +192,30 @@ const Seating = () => {
     return "grey";
   };
 
-  const handlePrefOnClick = (prefNum) => {
-    setPreference(prefNum);
-  }
-  const handleClick = () => {
-    document.getElementById('fileInput').click();
-  };
-  useEffect(() => {
-    if (companyName === "") {
-      navigate("/")
-    }
-  }, [companyName])
+  //popup close
   useEffect(() => {
     function handle(e) {
       if (e.target.className === "product-popup-parent") {
         setError(false)
+        setInCorrectFile(false)
       }
     }
     window.addEventListener("click", handle)
     return () => window.removeEventListener("click", handle)
   }, [])
-  console.log(csvData)
+
+
   return (
     <div className="seating">
 
       {!isOutputGenerated ?
         <div className="container-1">
 
-          <table className="MyTable">
-            <tbody>
-              {flag ? (
-                <>
-                  {res.layOut.map((row, i) => {
-                    return (
-                      <tr key={i}>
-                        {row.map((value, j) => {
-                          return (
-                            <td
-                              key={j}
-                              className="grid-box"
-                              style={{
-                                backgroundColor:
-                                  value === 1 ? "#2ecc71" : "#f1f2f6",
-                              }}>
-                              {value}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </>
-              ) : (
-                <>
-                  {res.map((row, i) => {
-                    return (
-                      <tr key={i}>
-                        {row.map((value, j) => {
-                          return (
-                            <td
-                              key={j}
-                              className="grid-box"
-                              style={{
-                                backgroundColor:
-                                  value === 1 ? "#2ecc71" : "#f1f2f6",
-                              }}>
-                              {value}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </>
-              )}
-            </tbody>
-          </table>
+          <TableContainer data={res} />
 
           <div className="form-wrapper">
             {
-              !(csvData?.length>0) &&
+              (file?.name === undefined || file?.name === "") &&
               <>
                 <p className="h-1">Available Spaces : {space}</p>
                 <div className="add-div">
@@ -241,10 +229,15 @@ const Seating = () => {
 
             <div className="btn-wrapper">
               <p className="h-2">Count Priority </p>
-              <RadioInput number={2} preference={preference} handlePrefOnClick={handlePrefOnClick} label="ASC" />
-              <RadioInput number={1} preference={preference} handlePrefOnClick={handlePrefOnClick} label="DES" />
-              <RadioInput number={3} preference={preference} handlePrefOnClick={handlePrefOnClick} label="Random" />
+              <RadioInput number={2} preference={preference} handlePrefOnClick={setPreference} label="ASC" />
+              <RadioInput number={1} preference={preference} handlePrefOnClick={setPreference} label="DES" />
+              <RadioInput number={3} preference={preference} handlePrefOnClick={setPreference} label="Random" />
             </div>
+            {/* <div className="btn-wrapper">
+              <p className="h-2">Algorithm prefer </p>
+              <RadioInput number={1} preference={algorithmPref} handlePrefOnClick={setAlgorithmPref} label="ALGORITHM 1" />
+              <RadioInput number={2} preference={algorithmPref} handlePrefOnClick={setAlgorithmPref} label="ALGORITHM 2" />
+            </div> */}
 
             <div className="team-list-input-wrapper">
               <div className="team-list-container">
@@ -252,47 +245,58 @@ const Seating = () => {
                   teamList?.map((data, index) => {
                     return (
                       <div className="input-wrapper">
-                        <TextInput type="text" name="TeamName" value={data.TeamName} index={index} handleOnChange={handleOnChange} />
-                        <TextInput type="number" name="TeamCount" value={data.TeamCount} availableSpaces={availableSpaces} space={space} index={index} handleOnChange={handleOnChange} />
-                        <button
-                          className="cross-btn"
-                          onClick={() => handleCloseBtn(index)}>
-                          X
-                        </button>
+                        <TextInput type="text" name="teamName" value={data.teamName} index={index} handleOnChange={handleOnChange} />
+                        <TextInput type="number" name="teamCount" value={data.teamCount} availableSpaces={availableSpaces} space={space} index={index} handleOnChange={handleOnChange} />
+                        {
+                          (file?.name === undefined || file?.name === "") && <button
+                            className="cross-btn"
+                            onClick={() => handleCloseBtn(index)}>
+                            X
+                          </button>
+                        }
                       </div>
                     );
                   })}
                 <div className="input-file">
-                  <div className="or-div">
-                    <div className="line"></div>
-                    <p className="h-3">OR</p>
-                    <div className="line"></div>
-                  </div>
+                  {
+                    (file?.name === undefined || file?.name === "") &&
+                    <div className="or-div">
+                      <div className="line"></div>
+                      <p className="h-3">OR</p>
+                      <div className="line"></div>
+                    </div>
+                  }
                   <div className='upload-wrapper' >
-                    <FontAwesomeIcon icon={faArrowUpFromBracket} size="3x" color="#387EED" onClick={handleClick}/>
+                    <FontAwesomeIcon icon={faArrowUpFromBracket} size="3x" color="#387EED" onClick={handleClick} />
                     <input
                       style={{ display: 'none' }}
                       onChange={handleFile}
                       id="fileInput"
                       type="file"
+                      accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     />
                     <button className='upload-btn' onClick={handleClick}>
                       Upload csv file
                     </button>
                     <br></br>
                     <div className="upload-file-wrapper">
-                    <p className="uploaded-file">{file?.name}</p>
-                    {
-                      file?.name!==undefined &&
-                    <button  className="cross-btn" onClick={()=>{setFile("");setTeamList([]);setCsvData([])}}>
-                    X</button>
-                    }
+                      <p className="uploaded-file">{file?.name}</p>
+                      {
+                        file?.name !== undefined &&
+                        <button className="cross-btn" onClick={() => { setFile(""); setTeamList([]); setCsvData([]) }}>
+                          X</button>
+                      }
                     </div>
                   </div>
-
-                  <button onClick={handleFileSubmit} className="click-btn">
-                    <FontAwesomeIcon icon={faCircleCheck} style={{ marginRight: "0.5rem" }} />
-                    Verify to submit</button>
+                  {
+                    !(file?.name === undefined || file?.name === "") &&
+                    <button onClick={handleFileSubmit} className="click-btn" style={{
+                      backgroundColor: csvData?.length > 0 ? "#42CE7D" :
+                        (file?.name === undefined || file?.name === "") ? "#3740a4" : "red"
+                    }}>
+                      <FontAwesomeIcon icon={faCircleCheck} style={{ marginRight: "0.5rem" }} />
+                      {csvData?.length > 0 ? "Vertified Successfully" : "Proceed to Verify"} </button>
+                  }
                 </div>
               </div>
             </div>
@@ -302,6 +306,7 @@ const Seating = () => {
               </button>
             </div>
           </div>
+
         </div>
         :
         <div className="container-1 ">
@@ -309,9 +314,9 @@ const Seating = () => {
             <h2>Team Allocation Layout</h2>
             <div className="btn-wrapper">
               <div className="btn-options">
-                <RadioInput handleSubmit={handleSubmit} number={2} preference={preference} handlePrefOnClick={handlePrefOnClick} label="ASC" />
-                <RadioInput handleSubmit={handleSubmit} number={1} preference={preference} handlePrefOnClick={handlePrefOnClick} label="DES" />
-                <RadioInput handleSubmit={handleSubmit} number={3} preference={preference} handlePrefOnClick={handlePrefOnClick} label="Random" />
+                <RadioInput handleSubmit={handleSubmit} number={2} preference={preference} handlePrefOnClick={setPreference} label="ASC" />
+                <RadioInput handleSubmit={handleSubmit} number={1} preference={preference} handlePrefOnClick={setPreference} label="DES" />
+                <RadioInput handleSubmit={handleSubmit} number={3} preference={preference} handlePrefOnClick={setPreference} label="Random" />
               </div>
               <button onClick={handleSubmit} className="filter-btn">Apply Filter</button>
             </div>
@@ -326,11 +331,8 @@ const Seating = () => {
                             key={j}
                             className="grid-box"
                             style={{
-                              backgroundColor: flag
-                                ? res.layOut[i][j] === 1
-                                  ? handleReturnColor(value)
-                                  : "#f1f2f6"
-                                : res?.[i][j] === 1
+                              backgroundColor:
+                                res?.[i][j] === 1
                                   ? handleReturnColor(value)
                                   : "#f1f2f6",
                             }}
@@ -371,10 +373,13 @@ const Seating = () => {
         </div>
       }
       {
-        error &&
+        (error.file || error.addTeam || error.outOfSpace || error.fileDataIncorrect || inCorrectFile) &&
         <div className='product-popup-parent'>
           <div className='product-popup'>
-            <ErrorPopup />
+            <div className='close-icon' onClick={handleErrorClose}>
+              <FontAwesomeIcon icon={faClose} size='2xl' />
+            </div>
+            <ErrorPopup error={error} inCorrectFile={inCorrectFile} />
           </div>
         </div>
       }
