@@ -36,9 +36,9 @@ export const UpdatePopup = ({ layoutSeleted,setPopup }) => {
     }
 
     return (
-        <div>
+        <div className='update-popup-page'>
             <p className='heading'>Update Layout</p>
-            <div>
+            <div className='table'>
             {layoutData?.map((row, rowIndex) => (
                 <div key={rowIndex} className="row">
                     {row?.map((cell, colIndex) => (
@@ -54,8 +54,9 @@ export const UpdatePopup = ({ layoutSeleted,setPopup }) => {
                 </div>
             ))}     
             </div>
-           
-            <button onClick={handleSubmit}>Submit</button>
+           <div className='submit-wrapper'>
+            <button className='submit-btn' onClick={handleSubmit}>Submit</button>
+           </div>
         </div>
     )
 }

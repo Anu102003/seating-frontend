@@ -9,9 +9,10 @@ import { Home } from "../pages/Home/Home";
 import { Operations } from "../pages/Operations/Operations";
 import NavBar from "../pages/NavBar";
 import { Allocation } from "../pages/Allocation/Allocation";
+import { SingleAllocation } from "../pages/SingleAllocation/SingleAllocation";
 
 const MainRoutes = () => {
-  const [companyName, setCompanyName] = useState("ice")
+  const [companyName, setCompanyName] = useState("iceq")
   const[companyNotFound,setCompanyNotFound]=useState(false)
 
   return (
@@ -23,6 +24,7 @@ const MainRoutes = () => {
           <Route path="/register" element={<LayoutRegister />} />
           <Route path="/layoutform" element={<LayoutForm />} />
           <Route path="/allocation" element={<Allocation />} />
+          <Route path="/allocationitem" element={<SingleAllocation />} />
           <Route path="/login" element={<LoginPage />} />
           {/* <Route path="/register" element={<RegisterForm/>}/> */}
           <Route path="/operations" element={<Operations />} />

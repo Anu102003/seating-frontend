@@ -16,7 +16,6 @@ const Seating = () => {
   const res = location.state.data;
   const layoutId = location.state.layoutId;
   let availableSpaces = location.state.availableSpaces;
-
   const [isOutputGenerated, setIsOutput] = useState(false);
   const [outputArray, setOutputArray] = useState();
 
@@ -28,7 +27,7 @@ const Seating = () => {
   const [teamNameList, setTeamNameList] = useState([]);
   const [teamKeyList, setTeamKeyList] = useState([]);
   const [preference, setPreference] = useState(2);
-  const [algorithmPref, setAlgorithmPref] = useState(2);
+  const [algorithmPref, setAlgorithmPref] = useState(1);
   const [orderedTeamList, setOrderedTeamList] = useState([]);
   const [space, setSpace] = useState(availableSpaces);
   const [filespace, setFileSpace] = useState();
@@ -39,7 +38,7 @@ const Seating = () => {
     outOfSpace: false,
     fileDataIncorrect: false,
   });
-
+  console.log(teamKeyList)
   const layOutDto = {
     layoutId: layoutId,
     teamDtoList: teamList,
@@ -95,18 +94,20 @@ const Seating = () => {
   }
   // closing error 
   const handleErrorClose = () => {
-    if (inCorrectFile) {
-      setInCorrectFile(false)
-    } else if (!(space >= 0)) {
-      setError((prevError) => ({ ...prevError, outOfSpace: false }))
-    }
-    else if (layOutDto.teamDtoList.length < 0 && file.name !== "" || file.name !== undefined) {
-      setError((prevError) => ({ ...prevError, addTeam: false }))
-    } else if (availableSpaces < filespace) {
-      setError((prevError) => ({ ...prevError, fileDataIncorrect: false }))
-    } else {
-      setError((prevError) => ({ ...prevError, file: false }))
-    }
+    setInCorrectFile(false)
+    setError((prevError) => ({ ...prevError, file: false, fileDataIncorrect: false, addTeam: false, outOfSpace: false }))
+    // if (inCorrectFile) {
+    //   setInCorrectFile(false)
+    // } else if (!(space >= 0)) {
+    //   setError((prevError) => ({ ...prevError, outOfSpace: false }))
+    // }
+    // else if (layOutDto.teamDtoList.length < 0 && file.name !== "" || file.name !== undefined) {
+    //   setError((prevError) => ({ ...prevError, addTeam: false }))
+    // } else if (availableSpaces < filespace) {
+    //   setError((prevError) => ({ ...prevError, fileDataIncorrect: false }))
+    // } else {
+    //   setError((prevError) => ({ ...prevError, file: false }))
+    // }
   }
 
   //close input field
@@ -116,17 +117,17 @@ const Seating = () => {
     arr = arr.slice(0, index).concat(arr.slice(index + 1, arr.length));
     setTeamList(arr);
   };
-  
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // handling csv  (api call)
   const handleFileSubmit = async () => {
     try {
       const res = await csvFileApi(formData, setInCorrectFile)
       setFileSpace(res.data.spacesOccupied)
-      if(!inCorrectFile){
+      if (!inCorrectFile) {
         // if (res.data.spacesOccupied === availableSpaces) {
-          setCsvData(res?.data?.teamDtoList)
-          setError((prevError) => ({ ...prevError, fileDataIncorrect: false }))
+        setCsvData(res?.data?.teamDtoList)
+        setError((prevError) => ({ ...prevError, fileDataIncorrect: false }))
         // }
         //  else {
         //   setError((prevError) => ({ ...prevError, fileDataIncorrect: true }))
@@ -135,7 +136,7 @@ const Seating = () => {
         //   setCsvData([])
         // }
       }
-      }
+    }
     catch (error) {
       console.log(error)
     }
@@ -203,8 +204,7 @@ const Seating = () => {
     window.addEventListener("click", handle)
     return () => window.removeEventListener("click", handle)
   }, [])
-
-
+  console.log(preference, algorithmPref)
   return (
     <div className="seating">
 
@@ -228,16 +228,16 @@ const Seating = () => {
             }
 
             <div className="btn-wrapper">
-              <p className="h-2">Count Priority </p>
-              <RadioInput number={2} preference={preference} handlePrefOnClick={setPreference} label="ASC" />
-              <RadioInput number={1} preference={preference} handlePrefOnClick={setPreference} label="DES" />
-              <RadioInput number={3} preference={preference} handlePrefOnClick={setPreference} label="Random" />
+              <p className="h-2">Count Priority</p>
+              <RadioInput number={2} preference={preference} name="perference" handlePrefOnClick={setPreference} label="ASC" />
+              <RadioInput number={1} preference={preference} name="perference" handlePrefOnClick={setPreference} label="DES" />
+              <RadioInput number={3} preference={preference} name="perference" handlePrefOnClick={setPreference} label="Random" />
             </div>
-            {/* <div className="btn-wrapper">
+            <div className="btn-wrapper">
               <p className="h-2">Algorithm prefer </p>
-              <RadioInput number={1} preference={algorithmPref} handlePrefOnClick={setAlgorithmPref} label="ALGORITHM 1" />
-              <RadioInput number={2} preference={algorithmPref} handlePrefOnClick={setAlgorithmPref} label="ALGORITHM 2" />
-            </div> */}
+              <RadioInput number={1} preference={algorithmPref} name="algorithm" handlePrefOnClick={setAlgorithmPref} label="ALGORITHM 1" />
+              <RadioInput number={2} preference={algorithmPref} name="algorithm" handlePrefOnClick={setAlgorithmPref} label="ALGORITHM 2" />
+            </div>
 
             <div className="team-list-input-wrapper">
               <div className="team-list-container">
@@ -311,13 +311,23 @@ const Seating = () => {
         :
         <div className="container-1 ">
           <div className="layout-wrapper">
-            <h2>Team Allocation Layout</h2>
+            <h2>Team Allocation</h2>
             <div className="btn-wrapper">
               <div className="btn-options">
+                <p className="h-2">Count Priority :</p>
                 <RadioInput handleSubmit={handleSubmit} number={2} preference={preference} handlePrefOnClick={setPreference} label="ASC" />
                 <RadioInput handleSubmit={handleSubmit} number={1} preference={preference} handlePrefOnClick={setPreference} label="DES" />
                 <RadioInput handleSubmit={handleSubmit} number={3} preference={preference} handlePrefOnClick={setPreference} label="Random" />
               </div>
+            </div>
+            <div className="btn-wrapper">
+              <div className="btn-options">
+                <p className="h-2">Algorithm prefer : </p>
+                <RadioInput number={1} preference={algorithmPref} name="algorithm" handlePrefOnClick={setAlgorithmPref} label="ALGORITHM 1" />
+                <RadioInput number={2} preference={algorithmPref} name="algorithm" handlePrefOnClick={setAlgorithmPref} label="ALGORITHM 2" />
+              </div>
+            </div>
+            <div className="filter-btn-wrapper">
               <button onClick={handleSubmit} className="filter-btn">Apply Filter</button>
             </div>
             <table className="MyTable MyTable-2">
@@ -352,17 +362,18 @@ const Seating = () => {
             {teamNameList && <h2>Team Keys</h2>}
             <table className="team-key-list key-table">
               <thead>
-                <td>Team Name</td>
                 <td>Team Key</td>
+                <td>Team Name</td>
+                <td>Team Count</td>
               </thead>
               <tbody>
                 {orderedTeamList &&
                   orderedTeamList.map((team) => {
                     return (
                       <tr>
-                        <td>{team.name}</td>
                         <td>{team.key}</td>
-
+                        <td>{team.name}</td>
+                        <td>{team.count}</td>
                       </tr>
                     );
                   })}

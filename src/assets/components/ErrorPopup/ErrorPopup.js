@@ -43,7 +43,7 @@ export const ErrorPopup = ({ error,inCorrectFile }) => {
                         File format is incorrect
                     </p>
                     <p className='error-txt'>
-                        Please provide xl file
+                        Please provide xlsx file
                     </p>
                 </>
             }

@@ -1,0 +1,71 @@
+@import "../../assets/styles/defaultmixin.scss";
+
+
+
+
+.single-allocation-page {
+    margin: 0 8rem 4rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+    padding: 5rem 7rem 0.5rem;
+
+
+    .h-1 {
+        @include heading;
+        padding-bottom: 3rem;
+    }
+
+    .team-list-wrapper {
+
+        @include displayFlex;
+        flex-direction: column;
+
+        .team-list {
+            margin: 1rem 0 6rem;
+            border-collapse: collapse;
+            //         @include displayFlex;
+            // flex-direction: column;
+
+            thead td {
+                @include table-cell;
+                background-color: rgb(87, 64, 64);
+                color: white;
+                border: 1px solid black;
+                @include fontS20B700;
+            }
+
+            tr td {
+                @include table-cell;
+                font-size: 18px;
+            }
+        }
+    }
+
+    .allocation-layout {
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        margin-bottom: 7rem;
+        padding: 3rem 3rem 2rem;
+
+        .h-3 {
+            padding: 1rem 0 0rem 2rem;
+
+            .h-2 {
+                @include fontS22B700;
+                padding-right: 0.5rem;
+            }
+        }
+
+        .table-wrapper {
+            @include displayFlex;
+            width: 100%;
+            margin-top: 3rem;
+
+            .MyTable {
+                border-collapse: collapse;
+                text-align: center;
+                height: 100%;
+                margin: 2.5rem 0 4rem;
+                width: 60%;
+            }
+        }
+    }
+}

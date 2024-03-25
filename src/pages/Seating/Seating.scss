@@ -23,6 +23,7 @@
     margin-top: 6rem;
     margin-bottom: 0.6rem;
     gap: 3rem;
+
     .container-1 {
         display: grid;
         grid-template-columns: 2fr 2fr;
@@ -186,13 +187,16 @@
                                 opacity: 0.9;
                             }
                         }
-                        .upload-file-wrapper{
+
+                        .upload-file-wrapper {
                             @include displayFlex;
-                            gap:1rem;
+                            gap: 1rem;
                             padding-bottom: 1rem;
+
                             .cross-btn {
                                 @include btn-basic(#dc3545)
                             }
+
                             .uploaded-file {
                                 font-size: 16px;
                                 // padding: 3px 0 1rem;
@@ -250,12 +254,14 @@
     gap: 2rem;
 }
 
-.team-key-continer{
-@include alignCenter;
-flex-direction: column;
+.team-key-continer {
+    @include alignCenter;
+    flex-direction: column;
+
     .team-key-list {
         list-style: none;
     }
+
     .key-table {
         border-collapse: collapse;
         margin-top: 2rem;
@@ -264,14 +270,13 @@ flex-direction: column;
 }
 
 
-@mixin table-cell {
-    padding: .5rem;
-    border: 1px solid;
-    text-align: center;
-}
 
 .key-table thead td {
     @include table-cell;
+    background-color: rgb(87, 64, 64);
+    color: white;
+    border: 1px solid black;
+    @include fontS20B700;
 }
 
 .key-table tr td {
@@ -293,6 +298,9 @@ flex-direction: column;
         .btn-options {
             display: flex;
             gap: 1rem;
+            .h-2{
+                @include fontS18B700;
+            }
 
             .radio-btn {
                 display: flex;
@@ -306,31 +314,21 @@ flex-direction: column;
             }
         }
 
+    }
+
+    .filter-btn-wrapper {
+margin: 2rem 0;
         .filter-btn {
             @include btn-basic(#1891D1);
             width: max-content;
-            margin-left: 3rem;
 
             @media only screen and (max-width:450px) {
                 margin-left: 0;
             }
 
         }
-
-        @media only screen and (max-width:450px) {
-            display: inline;
-        }
-
     }
 
-    // .filter-wrapper{
-    //     @include displayFlex;
-    //     padding: 1rem 0 2rem;
-    //     .filter-btn{
-    //         @include btn-basic(#1891D1);
-    //         width:max-content;
-    //     }
-    // }
 }
 
 .input-file {

@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import "./layoutPopup.scss"
 
-export const LayoutPopup = ({ layoutOptions, optionSelected, setOptionSelected, count, setPopup, setSubmit }) => {
+export const LayoutPopup = ({ layoutOptions, optionSelected, setOptionSelected, count, setPopup, setSubmit,deletePopup }) => {
 
-    // const [error, setError] = useState(false);
+    const [error, setError] = useState(false);
     useEffect(() => {
-        function handleOption() {
-            if (optionSelected === "") {
-            } else {
-                setSubmit(true);
-                setPopup(false);
-            }
-        }
+        if(!deletePopup){
 
-        if (optionSelected !== "") {
-            handleOption();
+                function handleOption() {
+                    if (optionSelected === "") {
+                    } else {
+                        setSubmit(true);
+                        setPopup(false);
+                    }
+                }
+        
+                if (optionSelected !== "") {
+                    handleOption();
+                }
         }
     }, [optionSelected, setSubmit, setPopup]);
     return (
@@ -30,11 +33,11 @@ export const LayoutPopup = ({ layoutOptions, optionSelected, setOptionSelected, 
                     </>
                     :
                     <>
-                        <p className='head'>Seating Count  : {count}</p>
-                        <p className='p-1'>Click ok to contine</p>
+                        <p className='head'>Are you sure you want to delete this layout?</p>
+                        <p className='p-1'>This will delete the layout permanently, you cannot undo this action.</p>
                         <div className="home__buttons">
-                            <button className="yes-btn" onClick={() => setSubmit(true)}>Ok</button>
-                            <button className="no-btn" onClick={() => { setPopup(false) }}>Cancel</button>
+                            <button className="cancel-btn" onClick={() => { setPopup(false) ; document.body.style.overflow = "unset" }}>Cancel</button>
+                            <button className="delete-btn" onClick={() => setSubmit(true)}>Yes, Delete it</button>
                         </div>
                     </>
             }

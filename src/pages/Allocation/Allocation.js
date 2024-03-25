@@ -5,18 +5,16 @@ import { getAllAllocationApi } from '../../actions/ApiCall';
 
 export const Allocation = () => {
     const location = useLocation();
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const data = location.state.data;
     const layoutId = location.state.layoutId;
     const availableSpaces = location.state.availableSpaces;
-
     const [allocationList, setAllocationList] = useState()
     useEffect(() => {
         async function getAllAllocation() {
             try {
                 const res = await getAllAllocationApi(layoutId)
                 setAllocationList(res.data)
-                //   console.log(res.message)
             } catch (err) {
                 console.log(err)
             }
@@ -32,15 +30,26 @@ export const Allocation = () => {
             }
         });
     }
+    const handleSingleAllocation = (selectedAllocation) => {
+        navigate("/allocationitem", {
+            state: {
+                allocation: selectedAllocation,
+                layout: data
+            }
+        })
+    }
     console.log(allocationList)
     return (
         <div className='allocation-page'>
+            <h2 className='h-1'>
+                Total Allocation : {allocationList?.length}
+            </h2>
             {
                 allocationList?.length > 0 ?
                     <>
                         {
-                            allocationList?.map((e, index) => (
-                                <p>Allocation {index + 1}</p>
+                            allocationList?.map((data, index) => (
+                                <div className='heading-1 list' onClick={() => handleSingleAllocation(data)}>Allocation {index + 1}</div>
                             ))
                         }
                     </> :

@@ -106,13 +106,18 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
     flex-direction: row;
     gap: 3rem;
     justify-content: space-evenly;
-
-
-    .yes-btn {
-        @include y-n-btn(#42CE7D)
+    
+    .cancel-btn {
+        width: max-content;
+        margin: 0 3rem;
+        @include y-n-btn(white);
+        color:rgb(100, 100, 100);
+        border:1px solid rgb(90, 87, 87);
     }
 
-    .no-btn {
+    .delete-btn {
+        width: max-content;
+        padding: 0 2rem;
         @include y-n-btn(#FF4D4D)
     }
 
@@ -169,4 +174,10 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
     &:hover{
         opacity: 0.9;
     }
+}
+
+@mixin table-cell {
+    padding: 1rem;
+    border: 1px solid;
+    text-align: center;
 }

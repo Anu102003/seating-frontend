@@ -1,17 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
 import "./Operations.scss"
 import { useNavigate } from 'react-router-dom'
-import { getAlllayoutApi } from '../../actions/ApiCall'
+import { deleteLayoutApi, getAlllayoutApi } from '../../actions/ApiCall'
 import { CompanyName } from '../../context/CreateContext'
 import { UpdatePopup } from '../../assets/components/UpdatePopup/UpdatePopup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClose } from '@fortawesome/free-solid-svg-icons'
+import { LayoutPopup } from '../../assets/components/LayoutPopup/LayoutPopup'
 
 export const Operations = () => {
     const companyName = useContext(CompanyName)
     const navigate = useNavigate()
     const [allLayouts, setLayouts] = useState()
     const [popup, setPopup] = useState(false)
+    const [deleteSelected, setDeleteSelected] = useState(false)
+    const [deleteSubmit, setDeleteSubmit] = useState(false);
     const [layoutSeleted, setLayoutSeleted] = useState()
     const handleLayoutSelected = (layout) => {
         setLayoutSeleted(layout)
@@ -26,6 +29,10 @@ export const Operations = () => {
         function handle(e) {
             if (e.target.className === "update-popup-parent") {
                 setPopup(false)
+                document.body.style.overflow = "unset"
+            }
+            if (e.target.className === "delete-popup-parent") {
+                setDeleteSelected(false)
                 document.body.style.overflow = "unset"
             }
         }
@@ -45,27 +52,36 @@ export const Operations = () => {
             }
         }
         getAllLayouts()
-    }, [companyName])
+    }, [companyName, deleteSelected])
 
     useEffect(() => {
         console.log(layoutSeleted?.layoutId)
     }, [layoutSeleted])
 
-    const handleDelete = async () => {
-        try {
-            console.log("first", layoutSeleted?.layoutId)
-            // const res = await deleteLayoutApi(
-            //     layoutSeleted.layoutId,
-            //     companyName.companyName,
-            //     )
-            //     if(res.message==="updates done"){
-            //         navigate("/operations")
-            //     }
-            //     console.log(res)
-        } catch (err) {
-            console.log("Error in deleting", err)
+    useEffect(() => {
+        async function handleDeleteSubmit() {
+            console.log(deleteSubmit,layoutSeleted?.layoutId)
+            if (deleteSubmit) {
+                try {
+                    console.log("first", layoutSeleted?.layoutId)
+                    const res = await deleteLayoutApi(
+                        layoutSeleted.layoutId,
+                        companyName.companyName,
+                    )
+                    if (res.message === "updates done") {
+                        navigate("/operations")
+                    }
+                    setDeleteSelected(false)
+                    setDeleteSubmit(false)
+                    document.body.style.overflow = "unset"
+                } catch (err) {
+                    console.log("Error in deleting", err)
+                }
+            }
         }
-    }
+        handleDeleteSubmit()
+    }, [deleteSubmit])
+console.log(deleteSubmit)
     return (
         <div className='operations-page'>
             <div className='add-btn-wrapper'>
@@ -109,7 +125,7 @@ export const Operations = () => {
                                 </div>
                                 <div className='btn-wrapper'>
                                     <button className='update-btn' onClick={() => { setPopup(true); document.body.style.overflow = "hidden" }}>Update</button>
-                                    <button className='delete-btn' onClick={handleDelete}>Delete</button>
+                                    <button className='delete-btn' onClick={() => { setDeleteSelected(true); document.body.style.overflow = "hidden" }}>Delete</button>
                                 </div>
                             </div>
                         ))}
@@ -124,6 +140,15 @@ export const Operations = () => {
                                 <FontAwesomeIcon icon={faClose} size='2xl' />
                             </div>
                             <UpdatePopup layoutSeleted={layoutSeleted} setPopup={setPopup} />
+
+                        </div>
+                    </div>
+                }
+                {
+                    deleteSelected &&
+                    <div className='delete-popup-parent'>
+                        <div className='delete-popup'>
+                            <LayoutPopup setPopup={setDeleteSelected} setSubmit={setDeleteSubmit} deletePopup={true} />
                         </div>
                     </div>
                 }
