@@ -43,7 +43,8 @@ const LayoutRegister = () => {
   //   }
   // };
   const navigate = useNavigate()
-  const { companyName } = useContext(CompanyName)
+  // const { companyName } = useContext(CompanyName)
+  const companyName = localStorage.getItem('companyName');
   const [totalLayouts, setTotalLayouts] = useState(0)
   const [error, setError] = useState({
     totalLayouts: false,
@@ -84,15 +85,6 @@ const LayoutRegister = () => {
               <p className="danger">*</p>
             </p>
             <div className={`home__input ${companyName !== "" && "activeInput"}`}>
-              {/* <input
-              placeholder="Enter company name"
-              autoSave="false"
-                type="text"
-                value={companyName}
-                onChange={(e) => {
-                  setCompanyName(e.target.value);
-                }}
-              /> */}
               <input
                 name="totalLayouts"
                 type="number"

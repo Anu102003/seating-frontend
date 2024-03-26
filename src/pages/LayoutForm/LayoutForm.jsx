@@ -9,7 +9,8 @@ const LayoutForm = () => {
   const totalLayout = location?.state?.totalLayout
   const [formSubmit, setFormSubmit] = useState(false);
   const navigate = useNavigate()
-  const { companyName } = useContext(CompanyName)
+  // const { companyName } = useContext(CompanyName)
+  const companyName = localStorage.getItem('companyName');
   const [details, setDetails] = useState({
     row: 0,
     column: 0
@@ -57,7 +58,7 @@ const LayoutForm = () => {
         console.log(data.length, totalLayout, data.length >= parseInt(totalLayout))
         if (data.length >= totalLayout) {
           const res = await createLayoutApi(companyName, data);
-          navigate("/");
+          navigate("/home");
         }
         
       } else {

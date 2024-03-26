@@ -50,13 +50,17 @@ export const AllLayouts = ({ allLayouts }) => {
       }
     }
   })
+  console.log(allLayouts)
   return (
     <div className='all-layout-page'>
       <table className="MyTable">
         <tbody>
           {allLayouts?.companyLayout?.map((layout, index) => (
             <div className='layout-list' onClick={() => { handleLayoutSelected(layout) }}>
-              <p className='heading'>Layout {index + 1}</p>
+              <div>
+                <p className='heading'>Layout {index + 1}</p>
+                <h3 style={{ color: layout.changed && "#FF6767" }}>{!layout.changed ? "( New Layout )" : "( Old Layout )"}</h3>
+              </div>
               <div className='grid-wrapper'>
                 {layout?.companyLayout?.map((row, i) => {
                   return (

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Seating from "../pages/Seating/Seating";
 import { CompanyName } from "../context/CreateContext";
 import { LoginPage } from "../pages/LoginPage/LoginPage";
@@ -10,25 +10,40 @@ import { Operations } from "../pages/Operations/Operations";
 import NavBar from "../pages/NavBar";
 import { Allocation } from "../pages/Allocation/Allocation";
 import { SingleAllocation } from "../pages/SingleAllocation/SingleAllocation";
+import { PageNotFound } from "../pages/PageNotFound/PageNotFound";
 
 const MainRoutes = () => {
-  const [companyName, setCompanyName] = useState("iceq")
-  const[companyNotFound,setCompanyNotFound]=useState(false)
-
+  const [companyName, setCompanyName] = useState()
+  const [companyNotFound, setCompanyNotFound] = useState(false)
+  const [authenticate, setAuthenticate] = useState(false);
+  const accessToken = localStorage.getItem('accessToken');
+  useEffect(()=>{
+    function handleAuthenticate(){
+      if(accessToken===""){
+        setAuthenticate(false)
+        console.log(authenticate)
+      }else{
+        setAuthenticate(true)
+        console.log(authenticate)
+      }
+    }
+    handleAuthenticate()
+  },[accessToken,authenticate])
+  console.log(authenticate,"aaaaaaaa")
   return (
     <BrowserRouter>
-      <NavBar companyNotFound={companyNotFound}/>
+      <NavBar companyNotFound={companyNotFound} setAuthenticate={setAuthenticate} authenticate={authenticate}/>
       <CompanyName.Provider value={{ companyName, setCompanyName }}>
         <Routes>
-          <Route path="/seating" element={<Seating />} />
-          <Route path="/register" element={<LayoutRegister />} />
-          <Route path="/layoutform" element={<LayoutForm />} />
-          <Route path="/allocation" element={<Allocation />} />
-          <Route path="/allocationitem" element={<SingleAllocation />} />
-          <Route path="/login" element={<LoginPage />} />
-          {/* <Route path="/register" element={<RegisterForm/>}/> */}
-          <Route path="/operations" element={<Operations />} />
-          <Route path="/" element={<Home companyNotFound={companyNotFound} setCompanyNotFound={setCompanyNotFound} />} />
+          <Route path="/" element={authenticate ? <Navigate to="/home" /> : <LoginPage setAuthenticate={setAuthenticate}/>} />
+          <Route path="/seating" element={authenticate ? <Seating /> : <Navigate to="/" />} />
+          <Route path="/register" element={authenticate ? <LayoutRegister /> : <Navigate to="/" />} />
+          <Route path="/layoutform"  element={authenticate ? <LayoutForm /> : <Navigate to="/" />} />
+          <Route path="/allocation"  element={authenticate ? <Allocation /> : <Navigate to="/" />} />
+          <Route path="/allocationitem"  element={authenticate ? <SingleAllocation  /> : <Navigate to="/" />} />
+          <Route path="/operations"  element={authenticate ? <Operations /> : <Navigate to="/" />} />
+          <Route path="/home" element={authenticate ? <Home companyNotFound={companyNotFound} setCompanyNotFound={setCompanyNotFound} />: <Navigate to="/" />} />
+          <Route path="*" element={<PageNotFound />}/>
         </Routes>
       </CompanyName.Provider>
     </BrowserRouter>

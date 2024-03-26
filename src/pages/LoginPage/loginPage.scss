@@ -1,0 +1,133 @@
+@import "../../assets/styles/defaultmixin.scss";
+
+.login-grid-card{
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 0.5fr;
+}
+.login-grid-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:3rem;
+}
+.login-right-container{
+     padding-bottom: 25px;
+     width:90%;
+    //  height: 75%;
+     border: 1px solid #DBDBDB;
+     margin-top: 3rem;
+     text-align: center;
+     @media screen and (max-width:1000px) {
+        padding: 0 2rem;
+        width: 100%;
+    }
+}
+.heading{
+    @include fontS28B600;
+    padding: 1rem 0;
+}
+.login-sign{
+    margin-top:25px;
+}
+.login-text{
+    width:268px;
+    height: 36px;
+    margin: 5px;
+    border: 1px solid #DBDBDB;
+    background-color: #FAFAFA;
+    padding-left: 10px;
+    border-radius: 3px;
+}
+.text-eye{
+    position: relative;
+    width: max-content;
+    .eye-icon{
+        position: absolute;
+        right: 1rem;
+        top:15px;
+    }
+}
+.sigin-password{
+    @include displayFlex;
+    width: 100%;
+    @media only screen and (max-width:1000px) {
+        display: inline;
+    }
+}
+
+.login-button{
+    width: 278px;
+    height: 36px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 1px solid #4CB5F9;
+    background-color: #4CB5F9;
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+
+.login-sign-option{
+   height:63px ;
+   width:90%;
+ border: 1px solid #DBDBDB;
+   margin-top: 10px;
+   text-align: center;
+   @media only screen and (max-width:1000px) {
+    width:100%;
+}
+}
+.sign-text{
+     font-weight: bold; 
+     color: #0095F6;
+     cursor: pointer;
+}
+.login-sign{
+   font-size: 14px;
+}
+.login-app-text{
+    font-size: 14px;
+}
+.login-app{
+    height: 105px;
+    width: 350px;
+    text-align: center;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+
+.login-left-container{
+   background-color: red;
+   img{
+    object-fit: cover;
+    @include max-wt-ht;
+   }
+}
+
+
+
+.login-error{
+    color: rgb(167, 33, 33);
+    font-size: 13px;
+    padding: 8px 0px;
+    // width: 300px;
+    margin: 0 5rem;
+    padding-left: 20px;
+    @media screen and (max-width:1000px) {
+        margin: 0;
+    }
+
+}
+.login-loading{
+    padding-top: 10px;
+}
+@media screen and (max-width:1000px) {
+    .login-left-container {
+        display: none;
+    }
+    .login-grid-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

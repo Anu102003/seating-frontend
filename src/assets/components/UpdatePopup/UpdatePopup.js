@@ -6,7 +6,8 @@ import { CompanyName } from '../../../context/CreateContext'
 import { useNavigate } from 'react-router-dom'
 
 export const UpdatePopup = ({ layoutSeleted,setPopup }) => {
-    const companyName = useContext(CompanyName);
+    // const companyName = useContext(CompanyName);
+    const companyName = localStorage.getItem('companyName');
     const navigate = useNavigate()
     const [layoutData, setLayoutData] = useState(layoutSeleted.companyLayout);
 
@@ -15,14 +16,14 @@ export const UpdatePopup = ({ layoutSeleted,setPopup }) => {
         updatedLayout[rowIndex][colIndex] = newValue;
         setLayoutData(updatedLayout);
     };
-    console.log(layoutSeleted.layoutId, layoutData, companyName.companyName
+    console.log(layoutSeleted.layoutId, layoutData, companyName
     )
 
     const handleSubmit = async () => {
         try {
             const res = await updateLayoutApi(
                 layoutSeleted.layoutId,
-                companyName.companyName,
+                companyName,
                 layoutData
                 )
                 if(res.message==="updates done"){

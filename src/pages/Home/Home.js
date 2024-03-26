@@ -5,13 +5,15 @@ import {  getAlllayoutApi } from '../../actions/ApiCall'
 import { CompanyName } from '../../context/CreateContext'
 
 export const Home = ({companyNotFound,setCompanyNotFound}) => {
-  const companyName = useContext(CompanyName)
+  // const companyName = useContext(CompanyName)
   // console.log(companyName.companyName)
+  const companyName = localStorage.getItem('companyName');
+
   const [allLayouts,setLayouts]=useState()
   useEffect(() => {
     async function getAllLayouts() {
       try {
-        const res = await getAlllayoutApi(companyName.companyName)
+        const res = await getAlllayoutApi(companyName)
         // console.log(res)
         setLayouts(res.data)
         if(res.message==="Company not found"){

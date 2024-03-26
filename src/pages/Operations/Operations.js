@@ -9,7 +9,8 @@ import { faClose } from '@fortawesome/free-solid-svg-icons'
 import { LayoutPopup } from '../../assets/components/LayoutPopup/LayoutPopup'
 
 export const Operations = () => {
-    const companyName = useContext(CompanyName)
+    // const companyName = useContext(CompanyName)
+    const companyName = localStorage.getItem('companyName');
     const navigate = useNavigate()
     const [allLayouts, setLayouts] = useState()
     const [popup, setPopup] = useState(false)
@@ -42,7 +43,7 @@ export const Operations = () => {
     useEffect(() => {
         async function getAllLayouts() {
             try {
-                const res = await getAlllayoutApi(companyName.companyName)
+                const res = await getAlllayoutApi(companyName)
                 setLayouts(res.data)
                 if (res.message === "Company not found") {
                 } else {
@@ -66,7 +67,7 @@ export const Operations = () => {
                     console.log("first", layoutSeleted?.layoutId)
                     const res = await deleteLayoutApi(
                         layoutSeleted.layoutId,
-                        companyName.companyName,
+                        companyName,
                     )
                     if (res.message === "updates done") {
                         navigate("/operations")
@@ -95,7 +96,10 @@ console.log(deleteSubmit)
                         {allLayouts?.companyLayout?.map((layout, index) => (
                             <div className='operation-layout-list' onClick={() => handleLayoutSelected(layout)}>
                                 <div className='grid-wrapper' onClick={() => { setPopup(true); document.body.style.overflow = "hidden" }}>
+                                    <div>
                                     <p className='heading'>Layout {index + 1}</p>
+                                    <h3 style={{ color: layout.changed && "#FF6767" }}>{!layout.changed ? "( New Layout )" : "( Old Layout )"}</h3>
+                                    </div>
                                     <div >
                                         {layout?.companyLayout?.map((row, i) => {
                                             return (

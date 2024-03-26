@@ -125,16 +125,16 @@ const Seating = () => {
       const res = await csvFileApi(formData, setInCorrectFile)
       setFileSpace(res.data.spacesOccupied)
       if (!inCorrectFile) {
-        // if (res.data.spacesOccupied === availableSpaces) {
+        if (res.data.spacesOccupied <= availableSpaces) {
         setCsvData(res?.data?.teamDtoList)
         setError((prevError) => ({ ...prevError, fileDataIncorrect: false }))
-        // }
-        //  else {
-        //   setError((prevError) => ({ ...prevError, fileDataIncorrect: true }))
-        //   setFile("")
-        //   setTeamList([])
-        //   setCsvData([])
-        // }
+        }
+         else {
+          setError((prevError) => ({ ...prevError, fileDataIncorrect: true }))
+          setFile("")
+          setTeamList([])
+          setCsvData([])
+        }
       }
     }
     catch (error) {
@@ -144,7 +144,7 @@ const Seating = () => {
 
 
   useEffect(() => {
-    if (csvData?.length > 0 && filespace > availableSpaces) {
+    if (csvData?.length > 0 && filespace <= availableSpaces) {
       setTeamList(csvData)
     }
   }, [csvData, filespace])

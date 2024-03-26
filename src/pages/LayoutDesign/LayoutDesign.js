@@ -12,7 +12,8 @@ export const LayoutDesign = ({ row, column,setUpdateData, setData, setFormSubmit
   const [popup, setPopup] = useState(false)
   const [newData, setNewData] = useState(null);
   const [arrayData, setArrayData] = useState({});
-  const { companyName } = useContext(CompanyName);
+  // const { companyName } = useContext(CompanyName);
+  const companyName = localStorage.getItem('companyName');
   const dataArray = Object.values(arrayData);
   const [submit, setSubmit] = useState(false);
 
