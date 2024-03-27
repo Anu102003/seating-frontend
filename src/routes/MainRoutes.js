@@ -29,7 +29,7 @@ const MainRoutes = () => {
     }
     handleAuthenticate()
   },[accessToken,authenticate])
-  console.log(authenticate,"aaaaaaaa")
+  console.log(authenticate)
   return (
     <BrowserRouter>
       <NavBar companyNotFound={companyNotFound} setAuthenticate={setAuthenticate} authenticate={authenticate}/>

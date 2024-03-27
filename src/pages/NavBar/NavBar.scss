@@ -9,11 +9,11 @@
 }
 
 .navbar-wrapper {
-    margin-bottom: 13rem;
+    margin-bottom: 10rem;
 
     .NavBar {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        height: 7rem;
+        height: 5.5rem;
         @include alignCenter;
         position: fixed;
         top: 0;

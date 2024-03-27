@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 // const API_BASE_URL = 'http://localhost:8090/';
-const API_BASE_URL = 'http://192.168.1.220:8081/';
+const API_BASE_URL = 'http://192.168.1.220:8081/api/v1';
 
 const baseApi = axios.create({
     baseURL: API_BASE_URL,
@@ -31,7 +31,7 @@ api.interceptors.request.use(
 
 export const loginApi = async (data) => {
     try {
-        const response = await baseApi.post(`/seating/login`, data);
+        const response = await baseApi.post(`/login`, data);
         const accessToken=response.data.data.accessToken
         localStorage.setItem('accessToken', accessToken);
         api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
@@ -45,7 +45,7 @@ export const loginApi = async (data) => {
 };
 export const registerApi = async (data) => {
     try {
-        const response = await baseApi.post(`/seating/register`, data);
+        const response = await baseApi.post(`/sign_up`, data);
         return response.data;
     } catch (error) {
         // console.log('Failed to register layout', error)
@@ -57,7 +57,7 @@ export const logoutApi = async () => {
     try {
         const accessToken = localStorage.getItem('accessToken');
         console.log(accessToken)
-        const response = await baseApi.post(`seating/logout`,{
+        const response = await baseApi.post(`/logout`,{
             accessToken:accessToken
         });
         const responseData = response;
@@ -72,7 +72,7 @@ export const logoutApi = async () => {
 export const createLayoutApi = async (name, layout) => {
     console.log(name, layout)
     try {
-        const response = await api.post(`/Layout`,
+        const response = await api.post(`/company`,
             {
                 "companyName": name,
                 "companyLayoutList": layout
@@ -86,7 +86,7 @@ export const createLayoutApi = async (name, layout) => {
 };
 export const getAlllayoutApi = async (name) => {
     try {
-        const response = await api.get(`/Layout/${name}`);
+        const response = await api.get(`/company/${name}`);
         const layoutData = response.data;
         return layoutData;
     } catch (error) {
@@ -96,7 +96,7 @@ export const getAlllayoutApi = async (name) => {
 
 export const allocationApi = async (data) => {
     try {
-        const response = await api.post("/Allocation", data);
+        const response = await api.post("/allocation", data);
         console.log(response)
         const layoutData = response.data;
         return layoutData;
@@ -107,7 +107,7 @@ export const allocationApi = async (data) => {
 
 export const csvFileApi = async (file, setInCorrectFile) => {
     try {
-        const response = await api.post("/Allocation/csvFile", file,
+        const response = await api.post("/file", file,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -125,7 +125,7 @@ export const csvFileApi = async (file, setInCorrectFile) => {
 export const addLayoutApi = async (name, layout) => {
     console.log(layout)
     try {
-        const response = await api.post(`/Layout/updateLayout`,
+        const response = await api.post(`/layout`,
             {
                 "companyName": name,
                 "defaultLayout": layout
@@ -141,7 +141,7 @@ export const addLayoutApi = async (name, layout) => {
 export const updateLayoutApi = async (id, name, layout) => {
     console.log(layout)
     try {
-        const response = await api.post(`/Layout/updateLayout`,
+        const response = await api.post(`/layout`,
             {
                 "layoutId": id,
                 "companyName": name,
@@ -159,7 +159,7 @@ export const updateLayoutApi = async (id, name, layout) => {
 export const deleteLayoutApi = async (id, name) => {
     console.log(id, name)
     try {
-        const response = await api.post(`/Layout/updateLayout`,
+        const response = await api.post(`/layout`,
             {
                 "layoutId": id,
                 "companyName": name
@@ -175,7 +175,7 @@ export const deleteLayoutApi = async (id, name) => {
 
 export const getAllAllocationApi = async (id) => {
     try {
-        const response = await api.get(`/Allocation/${id}`);
+        const response = await api.get(`/layout/${id}`);
         const layoutData = response.data;
         return layoutData;
     } catch (error) {

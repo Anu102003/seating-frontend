@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faKey, faUser } from '@fortawesome/free-solid-svg-icons'
 import { loginApi } from '../../actions/ApiCall'
 import { CompanyName } from '../../context/CreateContext'
 import { useNavigate } from 'react-router-dom'
 
-export const Login = ({setAuthenticate}) => {
+export const Login = ({ setAuthenticate }) => {
 
-    // const { setCompanyName } = useContext(CompanyName)
     const navigate = useNavigate();
     const [loginValue, setloginValue] = useState({
         emailid: "",
@@ -27,7 +26,6 @@ export const Login = ({setAuthenticate}) => {
 
     const [eyeVisible, setEyeVisible] = useState(false)
 
-    const [loginLoading, setloginLoading] = useState(false);
 
     //validating sign in value
     const loginChange = (e) => {
@@ -80,8 +78,7 @@ export const Login = ({setAuthenticate}) => {
             setloginError({ ...loginError, validateError: "" })
             const response = await loginApi(loginValue)
             try {
-                if (response.message ==='Login successful') {
-                    // setCompanyName(response.data.companyName)
+                if (response.message === 'Login successful') {
                     localStorage.setItem('companyName', response.data.companyName);
                     setAuthenticate(true)
                     navigate("/home")
@@ -93,13 +90,8 @@ export const Login = ({setAuthenticate}) => {
             } catch (err) {
                 console.log("Error in login")
             }
-            setloginLoading(true)
-            setTimeout(() => {
-                setloginLoading(false);
-            }, 2000);
         } else {
             setloginError({ ...loginError, validateError: "Please enter correct data" })
-            setloginLoading(false)
         }
     }
 
@@ -109,18 +101,24 @@ export const Login = ({setAuthenticate}) => {
                 Login
             </div>
             {/* Input field of login value */}
-            <input className='login-text'
-                defaultValue={setloginValue.emailid === "" ? "" : setloginValue.emailid}
-                onChange={loginChange}
-                type='text'
-                placeholder='Email address'
-                autocomplete="false" />
+            <div className='fields'>
+            <div className='input-field-wrapper'>
+                <FontAwesomeIcon icon={faUser} className='icon' />
+                <input className='login-text'
+                    defaultValue={setloginValue.emailid === "" ? "" : setloginValue.emailid}
+                    onChange={loginChange}
+                    type='text'
+                    placeholder='Email address'
+                    autocomplete="false" />
+            </div>
+            </div>
             <p className='login-error'>{loginError.loginError}</p>
 
 
             {/* Input field of Password value */}
-            <div className='sigin-password'>
-                <div className='text-eye'>
+            <div className='fields'>
+                <div className='input-field-wrapper'>
+                    <FontAwesomeIcon icon={faKey} className='icon' />
                     <input className='login-text'
                         defaultValue={setloginValue.password === "" ? "" : setloginValue.password}
                         onChange={passwordChange}
@@ -145,13 +143,7 @@ export const Login = ({setAuthenticate}) => {
                     Sign In
                 </div>
             </button>
-            {
-                loginLoading ?
-                    <div className='login-loading'>
-                        {/* <img src={loginpage.loading} width="35px" /> */}
-                    </div> :
-                    <></>
-            }
+           
             <p className='login-error'>{loginError.validateError}</p>
         </>
     )

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import {  faCircleInfo, faEnvelope, faEye, faEyeSlash, faKey } from '@fortawesome/free-solid-svg-icons'
 import { registerApi } from '../../actions/ApiCall'
 
 export const Register = ({ setLogin }) => {
@@ -11,13 +11,13 @@ export const Register = ({ setLogin }) => {
     })
     const [registerError, setregisterError] = useState({
         emailError: "",
-        fullNameError: "",
+        companyNameError: "",
         passwordError: "",
         validateError: ""
     })
     const [validregister, setValidregister] = useState({
         emailValid: false,
-        fullName: false,
+        companyName: false,
         passwordValid: false
     });
     const [registerLoading, setregisterLoading] = useState(false);
@@ -45,34 +45,34 @@ export const Register = ({ setLogin }) => {
 
 
     //validating full name value
-    const fullNameChange = (e) => {
-        const fullname = e.target.value;
-        if (fullname === "") {
-            setregisterError({ ...registerError, fullNameError: "Please enter a value" })
-            setValidregister({ ...validregister, fullNameValid: false })
+    const companyNameChange = (e) => {
+        const companyName = e.target.value;
+        if (companyName === "") {
+            setregisterError({ ...registerError, companyNameError: "Please enter a value" })
+            setValidregister({ ...validregister, companyNameValid: false })
         }
         //username valid
-        else if (!(/^[A-Z][a-z]*( [A-Z][a-z]*)*$/.test(fullname))) {
-            if (!/^[A-Z]/.test(fullname)) {
-                setregisterError({ ...registerError, fullNameError: "Company name must start with a capital letter" })
-                setValidregister({ ...validregister, fullNameValid: false })
-            } else if (/\d/.test(fullname)) {
-                setregisterError({ ...registerError, fullNameError: "Company name cannot contain numbers" })
-                setValidregister({ ...validregister, fullNameValid: false })
-            } else if (/[^a-zA-Z\s]/.test(fullname)) {
-                setregisterError({ ...registerError, fullNameError: "Company name cannot contain special characters" })
-                setValidregister({ ...validregister, fullNameValid: false })
+        else if (!(/^[A-Z][a-z]*( [A-Z][a-z]*)*$/.test(companyName))) {
+            if (!/^[A-Z]/.test(companyName)) {
+                setregisterError({ ...registerError, companyNameError: "Company name must start with a capital letter" })
+                setValidregister({ ...validregister, companyNameValid: false })
+            } else if (/\d/.test(companyName)) {
+                setregisterError({ ...registerError, companyNameError: "Company name cannot contain numbers" })
+                setValidregister({ ...validregister, companyNameValid: false })
+            } else if (/[^a-zA-Z\s]/.test(companyName)) {
+                setregisterError({ ...registerError, companyNameError: "Company name cannot contain special characters" })
+                setValidregister({ ...validregister, companyNameValid: false })
             }
             else {
                 setregisterValue({ ...registerValue, companyName: e.target.value })
-                setregisterError({ ...registerError, fullNameError: "" })
-                setValidregister({ ...validregister, fullNameValid: true })
+                setregisterError({ ...registerError, companyNameError: "" })
+                setValidregister({ ...validregister, companyNameValid: true })
             }
         }
         else {
             setregisterValue({ ...registerValue, companyName: e.target.value })
-            setregisterError({ ...registerError, fullNameError: "" })
-            setValidregister({ ...validregister, fullNameValid: true })
+            setregisterError({ ...registerError, companyNameError: "" })
+            setValidregister({ ...validregister, companyNameValid: true })
         }
     }
 
@@ -101,7 +101,7 @@ export const Register = ({ setLogin }) => {
     //sign up validate
     const validateregister = async (e) => {
         e.preventDefault();
-        if (validregister.emailValid === true && validregister.fullNameValid === true
+        if (validregister.emailValid === true && validregister.companyNameValid === true
             && validregister.passwordValid === true) {
             setregisterError({ ...registerError, validateError: "" })
             const response = await registerApi(registerValue)
@@ -134,27 +134,39 @@ export const Register = ({ setLogin }) => {
                 Register
             </div>
             {/* Input field of register value */}
-            <input className='login-text'
-                defaultValue={setregisterValue.email === "" ? "" : setregisterValue.email}
-                onChange={mobileEmailChange}
-                type='text'
-                placeholder='Email address'
-                autocomplete="off" />
+            <div className='fields'>
+                <div className='input-field-wrapper'>
+                    <FontAwesomeIcon icon={faEnvelope}className='icon'  />
+                    <input className='login-text'
+                        defaultValue={setregisterValue.email === "" ? "" : setregisterValue.email}
+                        onChange={mobileEmailChange}
+                        type='text'
+                        placeholder='Email address'
+                        autocomplete="off" />
+                </div>
+            </div>
             <p className='login-error'>{registerError.emailError}</p>
 
             {/* Input field of Full Name value */}
-            <input className='login-text'
-                defaultValue={setregisterValue.companyName === "" ? "" : setregisterValue.companyName}
-                onChange={fullNameChange}
-                type='text'
-                placeholder='Company Name'
-                autocomplete="off" />
-            <p className='login-error'>{registerError.fullNameError}</p>
+            <div className='fields'>
+                <div className='input-field-wrapper'>
+                <FontAwesomeIcon icon={faCircleInfo} className='icon'/>
+                    <input className='login-text'
+                        defaultValue={setregisterValue.companyName === "" ? "" : setregisterValue.companyName}
+                        onChange={companyNameChange}
+                        type='text'
+                        placeholder='Company Name'
+                        autocomplete="off" />
+                </div>
+            </div>
+
+            <p className='login-error'>{registerError.companyNameError}</p>
 
 
             {/* Input field of Password value */}
-            <div className='sigin-password'>
-                <div className='text-eye'>
+            <div className='fields'>
+                <div className='input-field-wrapper'>
+                <FontAwesomeIcon icon={faKey} className='icon' />
                     <input className='login-text'
                         defaultValue={setregisterValue.password === "" ? "" : setregisterValue.password}
                         onChange={registerPasswordChange}

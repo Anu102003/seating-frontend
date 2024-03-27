@@ -33,7 +33,7 @@ export const LoginPage = ({setAuthenticate}) => {
                         }
                     </div>
 
-                    <div>
+                    <div className='login-right-wrapper'>
                         {/* right container */}
                         <div className='login-right-container'>
                             <div className='login-signin'>

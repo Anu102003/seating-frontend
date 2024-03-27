@@ -35,7 +35,7 @@ const NavBar = ({ authenticate,setAuthenticate,companyNotFound }) => {
       <div className='NavBar'>
         <div className='navbar-container'>
           <div className='nav-menu-bar'>
-            <h1>Seating-Arrangement</h1>
+            <h2>Seating-Arrangement</h2>
             {authenticate &&
               <>
                 {
