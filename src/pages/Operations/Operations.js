@@ -53,7 +53,7 @@ export const Operations = () => {
             }
         }
         getAllLayouts()
-    }, [companyName, deleteSelected])
+    }, [companyName, deleteSelected,popup])
 
     useEffect(() => {
         console.log(layoutSeleted?.layoutId)

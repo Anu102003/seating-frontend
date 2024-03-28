@@ -119,6 +119,10 @@ $input-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 2px;
         border:1px solid rgb(90, 87, 87);
     }
 
+    .yes-btn{
+        @include y-n-btn(#10449e);
+        font-size: 18px; 
+    }
     .delete-btn {
         width: max-content;
         padding: 0 2rem;

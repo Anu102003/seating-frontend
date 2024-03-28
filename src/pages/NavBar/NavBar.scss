@@ -9,7 +9,7 @@
 }
 
 .navbar-wrapper {
-    margin-bottom: 10rem;
+    margin-bottom: 8rem;
 
     .NavBar {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -23,7 +23,7 @@
 
         .navbar-container {
             @include max-wt-ht;
-            padding: 0 5rem;
+            padding: 0 4rem;
             margin: auto;
             @include justifySpaceBt;
 
@@ -57,6 +57,11 @@
                     }
                 }
             }
+            .companyname-wrapper{
+                padding-right: 3rem;
+                @include displayFlex;
+                gap:0.5rem;
+            }
             .logout-btn {
                 @include justifySpaceBt;
                 gap:1rem;
@@ -65,7 +70,7 @@
                 color: white;
                 @include fontS18B700;
                 border-radius: 25px;
-                padding: 1rem 2.5rem;
+                padding: 0.7rem 2rem;
                 &:hover{
                     opacity: 0.9;
                 }

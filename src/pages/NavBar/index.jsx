@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import "./NavBar.scss";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faCircleUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { logoutApi } from '../../actions/ApiCall';
 
 const NavBar = ({ authenticate,setAuthenticate,companyNotFound }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
-
+const companyName=localStorage.getItem('companyName')
 
   const handleLogout = async () => {
     const response = await logoutApi()
@@ -27,7 +27,7 @@ const NavBar = ({ authenticate,setAuthenticate,companyNotFound }) => {
   }
 
   useEffect(() => {
-    if (pathname === '/') setSelectedMenu("")
+    if (pathname === '/home') setSelectedMenu("")
     if (pathname === '/operations') setSelectedMenu("operations")
   }, [pathname])
   return (
@@ -54,11 +54,17 @@ const NavBar = ({ authenticate,setAuthenticate,companyNotFound }) => {
               </>
             }
           </div>
+          
           {authenticate &&
+          <>
+          <div className='companyname-wrapper'>
+            <FontAwesomeIcon icon={faCircleUser} size="xl" style={{color: "#6d6e6f",}} />
+          {companyName}</div>
             <button className='logout-btn' onClick={() => { handleLogout() }}>
               <FontAwesomeIcon icon={faRightFromBracket} />
               Logout
             </button>
+          </>
           }
         </div>
       </div>

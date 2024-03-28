@@ -19,7 +19,8 @@ const MainRoutes = () => {
   const accessToken = localStorage.getItem('accessToken');
   useEffect(()=>{
     function handleAuthenticate(){
-      if(accessToken===""){
+      console.log(accessToken)
+      if(accessToken==="" || accessToken===null){
         setAuthenticate(false)
         console.log(authenticate)
       }else{
@@ -29,7 +30,6 @@ const MainRoutes = () => {
     }
     handleAuthenticate()
   },[accessToken,authenticate])
-  console.log(authenticate)
   return (
     <BrowserRouter>
       <NavBar companyNotFound={companyNotFound} setAuthenticate={setAuthenticate} authenticate={authenticate}/>

@@ -16,7 +16,7 @@
     }
 
     .operation-layout-page {
-        margin-top: 9rem;
+        margin-top: 5rem;
 
         .MyTable {
             border-collapse: collapse;
@@ -35,7 +35,7 @@
                 display: grid;
                 grid-template-columns: 2fr 1fr;
                 margin-bottom: 7rem;
-                padding: 4rem 0;
+                padding: 0rem 0 4rem;
 
                 .heading {
                     @include heading;
